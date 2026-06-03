@@ -5,20 +5,19 @@
  */
 
 import { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Zap, Shield, Code, FileText, Sparkles } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Zap, Shield, Code, FileText } from 'lucide-react';
 import ScoreGauge from './ScoreGauge';
-import SeverityBadge from './SeverityBadge';
 import ResultCard from './ResultCard';
 import Recommendations from './Recommendations';
 import AgentTimeline from './AgentTimeline';
-import { type AnalysisResult, type Finding } from '../../api/forge';
+import { type AnalysisResult } from '../../api/forge';
 
 interface ResultsDashboardProps {
   result: AnalysisResult;
 }
 
 export default function ResultsDashboard({ result }: ResultsDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'findings' | 'recommendations' | 'timeline'>('findings');
+  const [activeTab, setActiveTab] = useState<'findings' | 'recommendations' | 'timeline' | 'quality'>('findings');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
 
   const filteredFindings = severityFilter === 'all'

@@ -125,7 +125,6 @@ export function connectToStream(
   let accumulatedText = "";
   let reconnectAttempts = 0;
   const maxReconnectAttempts = 5;
-  const reconnectDelayMs = 1000;
 
   const attemptConnect = () => {
     if (eventSource) {
@@ -176,7 +175,7 @@ export function connectToStream(
       }
     };
 
-    eventSource.onerror = (errorEvent: Event) => {
+    eventSource.onerror = (_errorEvent: Event) => {
       if (eventSource?.readyState === EventSource.CLOSED) {
         // Explicitly closed by caller — not an error
         return;

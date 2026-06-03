@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, AlertTriangle, Lightbulb } from 'lucide-react';
+import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
 import SeverityBadge from './SeverityBadge';
 import CategoryBadge from './CategoryBadge';
 import { cn } from '../../lib/utils';
@@ -24,7 +24,6 @@ interface ResultCardProps {
 export default function ResultCard({ finding, index }: ResultCardProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
   const sortedFinding = { ...finding, severity: finding.severity as 'critical' | 'high' | 'medium' | 'low' };
 
   return (

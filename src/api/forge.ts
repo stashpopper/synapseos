@@ -154,7 +154,7 @@ export interface StreamCallbacks {
  * Connect to the SSE streaming endpoint and stream analysis progress.
  */
 export function connectToAnalysisStream(
-  request: AnalyzeRequest,
+  _request: AnalyzeRequest,
   callbacks: StreamCallbacks
 ): EventSource {
   const url = `${API_BASE}/api/forge/stream`;
@@ -209,7 +209,7 @@ export function connectToAnalysisStream(
       }
     };
 
-    eventSource.onerror = (errorEvent: Event) => {
+    eventSource.onerror = (_errorEvent: Event) => {
       if (eventSource?.readyState === EventSource.CLOSED) {
         return;
       }

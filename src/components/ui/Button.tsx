@@ -14,7 +14,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   glow?: boolean;
 }
 
-function resolveClasses(props: ButtonProps): string {
+function resolveClasses(props: Pick<ButtonProps, 'variant' | 'size' | 'fullWidth' | 'glow'> & { className?: string }): string {
   const { variant = 'primary', size = 'md', fullWidth = false, glow = false } = props;
 
   const base =

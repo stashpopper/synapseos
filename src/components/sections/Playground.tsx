@@ -5,11 +5,10 @@
  * Non-interactive — demonstrates how code flows through the analysis pipeline.
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Code,
   Brain,
-  Bug,
   Shield,
   Zap,
   Sparkles,
@@ -136,8 +135,7 @@ export default function Playground() {
   const [showResults, setShowResults] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
-  const [isLooping, setIsLooping] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isLooping] = useState(true);
 
   // Animation sequence
   useEffect(() => {
@@ -348,7 +346,6 @@ export default function Playground() {
                 <div className="space-y-3">
                   {pipelineSteps.map((step, index) => {
                     const status = getStepStatus(index);
-                    const isLastComplete = index === completedSteps.length - 1;
 
                     return (
                       <div

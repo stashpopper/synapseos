@@ -2,7 +2,7 @@ interface ContainerProps {
   children: React.ReactNode;
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '7xl' | 'full';
 }
 
 const paddingMap: Record<string, string> = {
@@ -19,6 +19,7 @@ const maxWidthMap: Record<string, string> = {
   lg: 'max-w-lg',
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
+  '7xl': 'max-w-7xl',
   full: 'max-w-full',
 };
 

@@ -5,7 +5,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+      - 'gcr.io/chatappchatterbox/synapseos-backend:latest'
       - '-f'
       - 'Dockerfile'
       - '.'
@@ -16,7 +16,7 @@ steps:
     id: 'Push to GCR'
     args:
       - 'push'
-      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+      - 'gcr.io/chatappchatterbox/synapseos-backend:latest'
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -27,7 +27,7 @@ steps:
       - 'deploy'
       - 'synapseos-backend'
       - '--image'
-      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+      - 'gcr.io/chatappchatterbox/synapseos-backend:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -45,4 +45,4 @@ steps:
       - '300s'
 
 images:
-  - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+  - 'gcr.io/chatappchatterbox/synapseos-backend:latest'

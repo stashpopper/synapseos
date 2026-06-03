@@ -98,7 +98,7 @@ export default function Pricing() {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {tiers.map((tier, index) => (
+          {tiers.map((tier, _index) => (
             <div
               key={tier.name}
               className={`relative glass-card glass-card-hover p-8 flex flex-col transition-all duration-500 ${

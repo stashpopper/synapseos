@@ -84,7 +84,7 @@ export default function FAQ() {
 
         {/* FAQ Accordion */}
         <div className="space-y-3">
-          {faqData.map((item, index) => {
+          {faqData.map((item, _index) => {
             const isOpen = isItemOpen(item.id);
 
             return (

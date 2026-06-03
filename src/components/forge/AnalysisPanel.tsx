@@ -31,7 +31,7 @@ export default function AnalysisPanel({ onResult }: AnalysisPanelProps) {
   const [filename, setFilename] = useState('');
   const [depth, setDepth] = useState<'quick' | 'standard' | 'deep'>('standard');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisId, setAnalysisId] = useState<string | null>(null);
+  const [_analysisId, setAnalysisId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 

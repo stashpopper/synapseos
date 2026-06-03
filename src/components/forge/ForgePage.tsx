@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { Code, Bug, Shield, Zap, Sparkles, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Code, Bug, Shield, Zap, Sparkles, CheckCircle2 } from 'lucide-react';
 import AnalysisPanel from './AnalysisPanel';
 import ResultsDashboard from './ResultsDashboard';
 import { type AnalysisResult } from '../../api/forge';
@@ -13,7 +13,7 @@ import { type AnalysisResult } from '../../api/forge';
 export default function ForgePage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [showResults, setShowResults] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [_isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleResult = (analysisResult: AnalysisResult) => {
     console.log('[ForgePage] handleResult called with:', analysisResult.health_score, analysisResult.summary);

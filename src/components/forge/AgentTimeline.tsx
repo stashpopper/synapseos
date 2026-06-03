@@ -5,8 +5,6 @@ interface AgentTimelineProps {
 }
 
 export default function AgentTimeline({ agents }: AgentTimelineProps) {
-  const agentOrder = ['planner', 'reviewer', 'security', 'performance', 'synthesizer', 'docs'];
-
   // Group agents: planner runs first, then parallel, then synthesizer, then docs
   const stages = [
     { label: 'Planning', agents: ['planner'] },
@@ -17,7 +15,7 @@ export default function AgentTimeline({ agents }: AgentTimelineProps) {
 
   return (
     <div className="space-y-4">
-      {stages.map((stage, stageIndex) => (
+      {stages.map((stage, _stageIndex) => (
         <div key={stage.label}>
           {/* Stage label */}
           <div className="flex items-center gap-2 mb-2">
