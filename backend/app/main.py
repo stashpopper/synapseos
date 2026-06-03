@@ -75,10 +75,11 @@ app = FastAPI(
 app.include_router(forge_analyze_router)
 app.include_router(forge_stream_router)
 
-# ── CORS — open for local Vite dev server ──
+# ── CORS — allow frontend domains ──
+frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:5173")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "https://thesynapseos.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
