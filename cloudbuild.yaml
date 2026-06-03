@@ -43,6 +43,8 @@ steps:
       - '10'
       - '--timeout'
       - '300s'
+      - '--set-env-vars'
+      - 'LLM_PROVIDER=openai,OPENAI_API_KEY=YOUR_OPENAI_API_KEY,ANALYSIS_MODEL=gpt-4o'
 
 images:
   - 'gcr.io/chatappchatterbox/synapseos-backend:latest'
