@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# SynapseOS — AI Code Review & Analysis Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Ship cleaner code, not technical debt. AI-powered code review that keeps your source code private.
 
-Currently, two official plugins are available:
+SynapseOS uses seven specialized AI agents to automatically analyze code for bugs, security vulnerabilities, performance issues, and code quality — all running locally on your machine.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Multi-Agent Analysis**: 7 specialized agents (Planner, Reviewer, Quality, Security, Performance, Synthesizer, Docs) working in parallel
+- **Security Deep Scan**: OWASP Top 10 vulnerability detection with custom rules
+- **Code Quality Intelligence**: Anti-pattern detection, cyclomatic complexity, and best practices
+- **Performance Optimization**: Algorithmic complexity analysis and bottleneck detection
+- **100% Private**: All analysis runs locally — your code never leaves your machine
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS v4
+- **Backend**: Python + FastAPI
+- **AI**: Local LLM inference with multi-agent orchestration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Quick Start
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js 20+
+- Python 3.12+
+- pip (Python package manager)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd backend && pip install -r requirements.txt
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Start the development server (frontend)
+npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start the backend API server
+cd backend && python -m app.main
 ```
+
+The app will be available at `http://localhost:5173`.
+
+## Project Structure
+
+```
+synapseos/
+├── src/                    # Frontend source code
+│   ├── components/
+│   │   ├── forge/          # Code review interface
+│   │   └── sections/       # Landing page sections
+│   ├── api/                # API client
+│   └── hooks/              # Custom React hooks
+├── backend/                # FastAPI backend
+│   └── app/
+│       ├── api/forge/      # Code analysis endpoints
+│       └── main.py         # Backend entry point
+├── public/                 # Static assets
+└── index.html              # Entry point
+```
+
+## Development
+
+```bash
+# Run linting
+npm run lint
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## License
+
+MIT

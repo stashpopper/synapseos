@@ -1,2 +1,0 @@
-backend/graphify-out
-src/graphify-out
