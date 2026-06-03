@@ -1,0 +1,82 @@
+{
+  "/home/hritam/Projects/1/synapseos/src/App.tsx": {
+    "mtime": 1780329316.1089742,
+    "ast_hash": "0407cb7c12219758be1d275a1e8af211",
+    "semantic_hash": "0407cb7c12219758be1d275a1e8af211"
+  },
+  "/home/hritam/Projects/1/synapseos/src/api/client.ts": {
+    "mtime": 1780330720.0200634,
+    "ast_hash": "bfa2a4103b27c067860ebe0b2184de19",
+    "semantic_hash": "bfa2a4103b27c067860ebe0b2184de19"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/FAQ.tsx": {
+    "mtime": 1780329201.7002645,
+    "ast_hash": "149837cc8b910e0db361beb5889cd096",
+    "semantic_hash": "149837cc8b910e0db361beb5889cd096"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Features.tsx": {
+    "mtime": 1780329277.1245015,
+    "ast_hash": "14fb3804fdfdc4afa25045936530d395",
+    "semantic_hash": "14fb3804fdfdc4afa25045936530d395"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Footer.tsx": {
+    "mtime": 1780329399.4851909,
+    "ast_hash": "bde034d1a177d93428bce189f7e97cfd",
+    "semantic_hash": "bde034d1a177d93428bce189f7e97cfd"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Hero.tsx": {
+    "mtime": 1780328940.047545,
+    "ast_hash": "806dd6d7603d63c3722f8fc37be0fd9f",
+    "semantic_hash": "806dd6d7603d63c3722f8fc37be0fd9f"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Marquee.tsx": {
+    "mtime": 1780329152.252692,
+    "ast_hash": "afcee65d441d5c1d74008ff3e8cc4fa2",
+    "semantic_hash": "afcee65d441d5c1d74008ff3e8cc4fa2"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Navbar.tsx": {
+    "mtime": 1780328880.3390899,
+    "ast_hash": "d784674eb1d89074dccffc69ff72d045",
+    "semantic_hash": "d784674eb1d89074dccffc69ff72d045"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/PerformanceEngine.tsx": {
+    "mtime": 1780328997.2132916,
+    "ast_hash": "432376e61a5c56930443ddd0fac84410",
+    "semantic_hash": "432376e61a5c56930443ddd0fac84410"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Playground.tsx": {
+    "mtime": 1780330837.4456246,
+    "ast_hash": "aff7c608075690ed5ba214e7befaf234",
+    "semantic_hash": "aff7c608075690ed5ba214e7befaf234"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/sections/Pricing.tsx": {
+    "mtime": 1780329244.3717668,
+    "ast_hash": "190d8563cfb9d804f6e289fab568d963",
+    "semantic_hash": "190d8563cfb9d804f6e289fab568d963"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/ui/Button.tsx": {
+    "mtime": 1780328821.5548036,
+    "ast_hash": "4a63da0d1ed9a7bec771fc358c515c01",
+    "semantic_hash": "4a63da0d1ed9a7bec771fc358c515c01"
+  },
+  "/home/hritam/Projects/1/synapseos/src/components/ui/Container.tsx": {
+    "mtime": 1780328801.2030287,
+    "ast_hash": "57be0db5021915ab1a114ea37ec1c9ca",
+    "semantic_hash": "57be0db5021915ab1a114ea37ec1c9ca"
+  },
+  "/home/hritam/Projects/1/synapseos/src/main.tsx": {
+    "mtime": 1780329321.0912337,
+    "ast_hash": "e7f0b28d6fafc62b3bcdb6e3b779ed6a",
+    "semantic_hash": "e7f0b28d6fafc62b3bcdb6e3b779ed6a"
+  },
+  "/home/hritam/Projects/1/synapseos/src/types/index.ts": {
+    "mtime": 1780328791.2162526,
+    "ast_hash": "772b5e997b954a5112fa7b192efa8dea",
+    "semantic_hash": "772b5e997b954a5112fa7b192efa8dea"
+  },
+  "/home/hritam/Projects/1/synapseos/src/vite-env.d.ts": {
+    "mtime": 1780329325.5863557,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": "0352474ba2918efe13895edbc3780d94"
+  }
+}
