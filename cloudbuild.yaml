@@ -1,0 +1,48 @@
+steps:
+  # Build the backend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build Docker image'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+      - '-f'
+      - 'Dockerfile'
+      - '.'
+    dir: '.'
+
+  # Push to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push to GCR'
+    args:
+      - 'push'
+      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Deploy to Cloud Run'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'synapseos-backend'
+      - '--image'
+      - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8000'
+      - '--memory'
+      - '512Mi'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '10'
+      - '--timeout'
+      - '300s'
+
+images:
+  - 'gcr.io/your-gcp-project-id/synapseos-backend:latest'
