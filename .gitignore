@@ -47,6 +47,10 @@ desktop.ini
 .pi-agent-browser-artifacts/
 .pi-chrome-debug/
 
+# Graphify output
+graphify-out/
+**/graphify-out/
+
 # Test coverage
 coverage/
 .nyc_output/
