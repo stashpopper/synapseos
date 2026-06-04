@@ -415,8 +415,13 @@ Analysis depth: {depth}
 Please analyze this code structure and create a plan.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if depth == "quick" else analysis_model
+
     try:
-        result = _call_llm(PLANNER_PROMPT, user_content)
+        result = _call_llm(PLANNER_PROMPT, user_content, model=selected_model)
 
         return {
             "planner_result": {
@@ -481,8 +486,13 @@ RULES:
 Please review this code for quality issues, anti-patterns, and style problems.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(REVIEWER_PROMPT, user_content)
+        result = _call_llm(REVIEWER_PROMPT, user_content, model=selected_model)
 
         findings = result if isinstance(result, list) else result.get("findings", [])
         summary = result.get("summary", "No findings") if isinstance(result, dict) else "Review complete"
@@ -555,8 +565,13 @@ RULES:
 Please perform a thorough code quality analysis.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(REVIEWER_PROMPT, user_content)
+        result = _call_llm(REVIEWER_PROMPT, user_content, model=selected_model)
 
         findings = result if isinstance(result, list) else result.get("findings", [])
         summary = result.get("summary", "Quality review complete") if isinstance(result, dict) else "Review complete"
@@ -663,8 +678,13 @@ RULES:
 Please perform a thorough security analysis.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(SECURITY_PROMPT, user_content)
+        result = _call_llm(SECURITY_PROMPT, user_content, model=selected_model)
 
         findings = result if isinstance(result, list) else result.get("findings", [])
         summary = result.get("summary", "Security scan complete") if isinstance(result, dict) else "Scan complete"
@@ -773,8 +793,13 @@ RULES:
 Please perform a thorough performance analysis.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(PERFORMANCE_PROMPT, user_content)
+        result = _call_llm(PERFORMANCE_PROMPT, user_content, model=selected_model)
 
         findings = result if isinstance(result, list) else result.get("findings", [])
         summary = result.get("summary", "Performance analysis complete") if isinstance(result, dict) else "Analysis complete"
@@ -901,8 +926,13 @@ NEGATIVE CONSTRAINTS:
 - NEVER invent findings about things not visible in the input.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(SYNTHESIZER_PROMPT, user_content)
+        result = _call_llm(SYNTHESIZER_PROMPT, user_content, model=selected_model)
 
         # Validate LLM response has required fields
         if "score" not in result or "score_breakdown" not in result:
@@ -982,8 +1012,13 @@ File: {filename}
 Please generate documentation suggestions for this code.
 """
 
+    # Select model based on depth
+    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    fast_model = os.getenv("FAST_MODEL", "mistral-small")
+    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+
     try:
-        result = _call_llm(DOCS_PROMPT, user_content)
+        result = _call_llm(DOCS_PROMPT, user_content, model=selected_model)
         return {
             "docs_result": {
                 "agent": "docs",
