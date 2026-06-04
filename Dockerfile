@@ -2,7 +2,9 @@
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci
+# Install TypeScript globally for build
+RUN npm install -g typescript
 COPY src/ ./src/
 COPY public/ ./public/
 COPY index.html ./
