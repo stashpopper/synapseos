@@ -13,6 +13,166 @@ import os
 from typing import Any, Dict, List
 
 from langchain_core.messages import HumanMessage, SystemMessage
+
+SEVERITY_ORDER = {"critical": 4, "high": 3, "medium": 2, "low": 1}
+
+# Canonical categories that the frontend expects
+VALID_CATEGORIES = {"security", "performance", "quality", "style", "architecture"}
+
+# Map common LLM-returned categories to canonical ones
+CATEGORY_ALIASES = {
+    # Security aliases
+    "error_handling": "quality",
+    "database": "performance",
+    "concurrency": "performance",
+    "resource_management": "performance",
+    "memory": "performance",
+    "network": "security",
+    "authentication": "security",
+    "authorization": "security",
+    "input_validation": "security",
+    "crypto": "security",
+    "data": "quality",
+    "testing": "quality",
+    "naming": "style",
+    "formatting": "style",
+    "documentation": "quality",
+    "maintainability": "quality",
+    "reliability": "quality",
+    "scalability": "performance",
+    "optimization": "performance",
+    "golang": "quality",
+    "language": "quality",
+    "general": "quality",
+    "misc": "quality",
+    "other": "quality",
+}
+
+
+def normalize_category(category: str) -> str:
+    """Normalize an LLM-returned category to one of the valid categories."""
+    if not category:
+        return "quality"
+    cat = category.lower().strip()
+    if cat in VALID_CATEGORIES:
+        return cat
+    # Try exact alias match
+    if cat in CATEGORY_ALIASES:
+        return CATEGORY_ALIASES[cat]
+    # Try partial match (e.g., "error_handling" -> "quality")
+    for alias, canonical in CATEGORY_ALIASES.items():
+        if alias in cat or cat in alias:
+            return canonical
+    # Default fallback
+    return "quality"
+
+
+def validate_line_numbers(findings: List[Dict], code: str) -> List[Dict]:
+    """Validate that AI-reported line numbers actually match the claimed finding.
+    If a line doesn't match the finding's title/description, set line to None.
+    Also normalizes categories to valid frontend categories."""
+    code_lines = code.split('\n')
+    validated = []
+    for f in findings:
+        # Normalize category for ALL findings (AI and pattern)
+        if "category" in f:
+            f = {**f, "category": normalize_category(f["category"])}
+        
+        if f.get("source") != "ai":
+            validated.append(f)
+            continue
+        line = f.get("line")
+        title = f.get("title", "").lower()
+        desc = f.get("description", "").lower()
+        if line and 0 < line <= len(code_lines):
+            actual_line = code_lines[line - 1].strip().lower()
+            # Check if the line content is relevant to the finding
+            is_relevant = False
+            # SQL injection: look for SELECT, INSERT, UPDATE, DELETE, WHERE, FROM
+            if "sql" in title or "injection" in title:
+                is_relevant = any(kw in actual_line for kw in ["select", "insert", "update", "delete", "where", "from", "like", "query", "execute"])
+            # eval/exec: look for eval( or exec(
+            elif "eval" in title or "exec" in title or "code injection" in title:
+                is_relevant = "eval(" in actual_line or "exec(" in actual_line
+            # hardcoded: look for = " or = '
+            elif "hardcoded" in title or "secret" in title or "credential" in title:
+                is_relevant = ('= "' in actual_line or "= '" in actual_line or "= '" in actual_line or "= \"" in actual_line) and not actual_line.startswith("#")
+            # N+1: look for for + execute/query
+            elif "n+1" in title or "batch" in title:
+                is_relevant = "for " in actual_line and ("execute" in actual_line or "query" in actual_line or "fetch" in actual_line)
+            # magic number: look for numeric literals
+            elif "magic" in title:
+                is_relevant = any(c.isdigit() for c in actual_line) and not actual_line.startswith("#") and not actual_line.startswith('"""')
+            # missing return: check if function body doesn't have return
+            elif "return" in title:
+                is_relevant = "return" not in actual_line
+            # print/logging: look for print(
+            elif "print" in title or "logging" in title:
+                is_relevant = "print(" in actual_line
+            # indentation: check for tabs or mixed spaces
+            elif "indent" in title:
+                is_relevant = actual_line.startswith("\t") or ("    " in actual_line and "\t" in actual_line)
+            # division: look for /
+            elif "division" in title or "zero" in title:
+                is_relevant = "/" in actual_line and "//" not in actual_line
+            # unclosed connection: look for connect or open
+            elif "connection" in title or "unclosed" in title:
+                is_relevant = "connect" in actual_line or "open(" in actual_line
+            # database: look for db, cursor, execute
+            elif "database" in title or "cursor" in title:
+                is_relevant = any(kw in actual_line for kw in ["cursor", "execute", "commit", "close", "connect"])
+            # resource handling: look for commit, close, with
+            elif "resource" in title:
+                is_relevant = any(kw in actual_line for kw in ["commit", "close", "with", "cursor"])
+            # string concatenation: look for += or + "
+            elif "concatenation" in title:
+                is_relevant = "+=" in actual_line or ("+ '" in actual_line) or ("+ \"" in actual_line)
+            # unused variable: look for variable = ... but no use
+            elif "unused" in title:
+                is_relevant = "= " in actual_line and not actual_line.startswith("#")
+            # else: accept if line contains any keyword from title/desc
+            else:
+                title_words = [w for w in title.split() if len(w) > 3]
+                is_relevant = any(w in actual_line for w in title_words)
+            
+            if not is_relevant:
+                f = {**f, "line": None}
+        validated.append(f)
+    return validated
+
+
+def deduplicate_findings(findings: List[Dict]) -> List[Dict]:
+    """Deduplicate findings by normalized title + line. Keeps highest severity."""
+    seen: Dict[str, Dict] = {}
+    for f in findings:
+        # Normalize title for matching (lowercase, strip punctuation)
+        title_key = "".join(c.lower() for c in f.get("title", "") if c.isalnum())
+        line_key = f.get("line") or ""
+        dedup_key = f"{title_key}:{line_key}"
+
+        if dedup_key in seen:
+            # Keep the higher severity finding
+            existing = seen[dedup_key]
+            if SEVERITY_ORDER.get(f.get("severity", "low"), 0) > SEVERITY_ORDER.get(existing.get("severity", "low"), 0):
+                seen[dedup_key] = f
+        else:
+            seen[dedup_key] = f
+
+    # Sort by severity (highest first), then by category
+    result = sorted(seen.values(), key=lambda x: (-SEVERITY_ORDER.get(x.get("severity", "low"), 0), x.get("category", "")))
+    return result
+
+
+def merge_agent_findings(state: Dict) -> List[Dict]:
+    """Collect all findings from agents, deduplicate, and return clean list."""
+    all_findings: List[Dict] = []
+    for key in ["reviewer_result", "quality_result", "security_result", "performance_result"]:
+        result = state.get(key)
+        if result and result.get("status") == "completed":
+            all_findings.extend(result.get("findings", []))
+
+    # Deduplicate: same title+line → keep highest severity
+    return deduplicate_findings(all_findings)
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_ollama import ChatOllama
@@ -521,12 +681,20 @@ def synthesizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     Synthesizer agent: Combines all findings into unified report.
     """
-    # Collect all findings
-    all_findings: List[Dict] = []
+    code = state.get("code", "")
+    
+    # Collect all findings from agents
+    raw_findings: List[Dict] = []
     for key in ["reviewer_result", "quality_result", "security_result", "performance_result"]:
         result = state.get(key)
         if result and result.get("status") == "completed":
-            all_findings.extend(result.get("findings", []))
+            raw_findings.extend(result.get("findings", []))
+    
+    # Validate line numbers for AI findings before deduplication
+    raw_findings = validate_line_numbers(raw_findings, code)
+    
+    # Deduplicate
+    all_findings = deduplicate_findings(raw_findings)
 
     # Build summary of all agent results
     agent_summaries = []
@@ -535,12 +703,12 @@ def synthesizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
         if result:
             agent_summaries.append(f"{result.get('agent', key)}: {result.get('message', 'N/A')}")
 
-    # Separate pattern and AI findings
+    # Separate pattern and AI findings (from the deduplicated set)
     pattern_findings = [f for f in all_findings if f.get("source") == "pattern"]
     ai_findings = [f for f in all_findings if f.get("source") == "ai"]
 
     user_content = f"""
-All agent findings ({len(all_findings)} total):
+Deduplicated agent findings ({len(all_findings)} total):
 
 --- PATTERN-BASED FINDINGS ({len(pattern_findings)}) ---
 {json.dumps(pattern_findings, indent=2) if pattern_findings else "None"}
@@ -549,7 +717,8 @@ All agent findings ({len(all_findings)} total):
 {json.dumps(ai_findings, indent=2) if ai_findings else "None"}
 
 Please synthesize these into a unified report with health score.
-Include ALL findings in your merged_findings — do not drop any.
+Return the EXACT same findings you received — do NOT add new findings that were not in the input.
+Do NOT invent findings about random modules, deserialization, or anything not present in the code.
 """
 
     try:
@@ -583,7 +752,7 @@ Include ALL findings in your merged_findings — do not drop any.
             ],
         }
     except Exception as e:
-        # Fallback scoring
+        # Fallback scoring (already deduplicated)
         critical = sum(1 for f in all_findings if f.get("severity") == "critical")
         high = sum(1 for f in all_findings if f.get("severity") == "high")
         medium = sum(1 for f in all_findings if f.get("severity") == "medium")
@@ -595,7 +764,7 @@ Include ALL findings in your merged_findings — do not drop any.
         quality_findings = sum(1 for f in all_findings if f.get("category") == "quality")
         performance_findings = sum(1 for f in all_findings if f.get("category") == "performance")
         if security_findings == 0 and quality_findings == 0 and performance_findings == 0:
-            score = max(0, score)  # Keep computed score
+            score = max(0, score)
         else:
             score = max(0, 100 - security_findings * 10 - quality_findings * 8 - performance_findings * 8)
 

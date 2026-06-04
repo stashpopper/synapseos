@@ -5,24 +5,27 @@
  */
 
 import { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Zap, Shield, Code, FileText } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Zap, Shield, Code, FileText, Cpu, Brain, BookOpen } from 'lucide-react';
 import ScoreGauge from './ScoreGauge';
 import ResultCard from './ResultCard';
 import Recommendations from './Recommendations';
 import AgentTimeline from './AgentTimeline';
+import DocumentationPanel from './DocumentationPanel';
 import { type AnalysisResult } from '../../api/forge';
+import type { FindingSource } from '../../api/forge';
 
 interface ResultsDashboardProps {
   result: AnalysisResult;
 }
 
 export default function ResultsDashboard({ result }: ResultsDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'findings' | 'recommendations' | 'timeline' | 'quality'>('findings');
+  const [activeTab, setActiveTab] = useState<'findings' | 'recommendations' | 'timeline' | 'quality' | 'docs'>('findings');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
+  const [sourceFilter, setSourceFilter] = useState<FindingSource | 'all'>('all');
 
-  const filteredFindings = severityFilter === 'all'
-    ? result.findings
-    : result.findings.filter((f) => f.severity === severityFilter);
+  const filteredFindings = result.findings
+    .filter((f) => severityFilter === 'all' || f.severity === severityFilter)
+    .filter((f) => sourceFilter === 'all' || f.source === sourceFilter);
 
   const severityCounts = {
     critical: result.findings.filter((f) => f.severity === 'critical').length,
@@ -30,6 +33,10 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
     medium: result.findings.filter((f) => f.severity === 'medium').length,
     low: result.findings.filter((f) => f.severity === 'low').length,
   };
+
+  const patternCount = result.findings.filter((f) => f.source === 'pattern').length;
+  const aiCount = result.findings.filter((f) => f.source === 'ai').length;
+  const untaggedCount = result.findings.filter((f) => !f.source).length;
 
   const agentStatuses: Record<string, { status: 'pending' | 'running' | 'completed' | 'error'; message?: string }> = {
     planner: {
@@ -124,6 +131,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
         {[
           { id: 'findings' as const, icon: Code, label: `Findings (${result.findings.length})` },
           { id: 'recommendations' as const, icon: FileText, label: 'Recommendations' },
+          { id: 'docs' as const, icon: BookOpen, label: 'Docs' },
           { id: 'timeline' as const, icon: Shield, label: 'Agents' },
           { id: 'quality' as const, icon: Zap, label: 'Quality Breakdown' },
         ].map((tab) => (
@@ -145,9 +153,46 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
       {/* Tab Content */}
       {activeTab === 'findings' && (
         <div className="space-y-4">
+          {/* Source filter */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs text-slate-500">Source:</span>
+            <button
+              onClick={() => setSourceFilter('all')}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                sourceFilter === 'all'
+                  ? 'bg-primary/10 text-primary border border-primary/30'
+                  : 'bg-surface-elevated text-slate-500 border border-border hover:text-slate-300'
+              }`}
+            >
+              All ({result.findings.length})
+            </button>
+            <button
+              onClick={() => setSourceFilter('pattern')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                sourceFilter === 'pattern'
+                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
+                  : 'bg-surface-elevated text-slate-500 border border-border hover:text-slate-300'
+              }`}
+            >
+              <Cpu className="w-3 h-3" />
+              Pattern ({patternCount})
+            </button>
+            <button
+              onClick={() => setSourceFilter('ai')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                sourceFilter === 'ai'
+                  ? 'bg-violet-500/10 text-violet-400 border border-violet-500/30'
+                  : 'bg-surface-elevated text-slate-500 border border-border hover:text-slate-300'
+              }`}
+            >
+              <Brain className="w-3 h-3" />
+              AI ({aiCount})
+            </button>
+          </div>
+
           {/* Severity filter */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-slate-500">Filter:</span>
+            <span className="text-xs text-slate-500">Severity:</span>
             {['all', 'critical', 'high', 'medium', 'low'].map((sev) => (
               <button
                 key={sev}
@@ -184,6 +229,10 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
           recommendations={result.recommendations}
           scoreBreakdown={result.score_breakdown}
         />
+      )}
+
+      {activeTab === 'docs' && (
+        <DocumentationPanel docsResult={result.agents.docs} />
       )}
 
       {activeTab === 'timeline' && (
@@ -251,6 +300,67 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
                   className="bg-amber-400 h-2 rounded-full transition-all duration-500"
                   style={{ width: `${result.score_breakdown.performance}%` }}
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Source Breakdown */}
+          <div className="glass-card p-5">
+            <h4 className="text-sm font-semibold text-white mb-3">Analysis Source Breakdown</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Pattern findings */}
+              <div className="p-3 rounded-xl border border-cyan-500/20 bg-cyan-500/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <Cpu className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs font-semibold text-cyan-400">Pattern-Based</span>
+                </div>
+                <div className="text-2xl font-bold text-cyan-400">{patternCount}</div>
+                <div className="text-[10px] text-slate-500 mt-1">Static analysis (regex/heuristics)</div>
+                <div className="mt-2 space-y-0.5">
+                  {(['security', 'quality', 'performance'] as const).map(cat => {
+                    const count = result.findings.filter(f => f.source === 'pattern' && f.category === cat).length;
+                    if (count === 0) return null;
+                    return (
+                      <div key={cat} className="text-[10px] text-slate-400 capitalize">
+                        {cat}: {count}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* AI findings */}
+              <div className="p-3 rounded-xl border border-violet-500/20 bg-violet-500/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain className="w-4 h-4 text-violet-400" />
+                  <span className="text-xs font-semibold text-violet-400">AI-Generated</span>
+                </div>
+                <div className="text-2xl font-bold text-violet-400">{aiCount}</div>
+                <div className="text-[10px] text-slate-500 mt-1">LLM deep analysis</div>
+                <div className="mt-2 space-y-0.5">
+                  {(['security', 'quality', 'performance'] as const).map(cat => {
+                    const count = result.findings.filter(f => f.source === 'ai' && f.category === cat).length;
+                    if (count === 0) return null;
+                    return (
+                      <div key={cat} className="text-[10px] text-slate-400 capitalize">
+                        {cat}: {count}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="p-3 rounded-xl border border-border bg-surface-elevated">
+                <div className="flex items-center gap-2 mb-2">
+                  <Code className="w-4 h-4 text-slate-400" />
+                  <span className="text-xs font-semibold text-slate-400">Total</span>
+                </div>
+                <div className="text-2xl font-bold text-slate-400">{result.findings.length}</div>
+                <div className="text-[10px] text-slate-500 mt-1">After deduplication</div>
+                <div className="mt-2 text-[10px] text-slate-500">
+                  Deduped by title + line
+                </div>
               </div>
             </div>
           </div>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
+import { ChevronDown, ChevronUp, Lightbulb, Cpu, Brain } from 'lucide-react';
 import SeverityBadge from './SeverityBadge';
 import CategoryBadge from './CategoryBadge';
 import { cn } from '../../lib/utils';
+import type { FindingSource } from '../../api/forge';
 
 interface Finding {
   severity: 'critical' | 'high' | 'medium' | 'low';
@@ -14,6 +15,7 @@ interface Finding {
   recommendation: string;
   code_snippet: string | null;
   cwe_id: string | null;
+  source?: FindingSource;
 }
 
 interface ResultCardProps {
@@ -46,6 +48,25 @@ export default function ResultCard({ finding, index }: ResultCardProps) {
           </h4>
           <div className="flex items-center gap-2 mt-1">
             <CategoryBadge category={sortedFinding.category as any} />
+            {sortedFinding.source && (
+              <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium ${
+                sortedFinding.source === 'pattern'
+                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                  : 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
+              }`}>
+                {sortedFinding.source === 'pattern' ? (
+                  <>
+                    <Cpu className="w-2.5 h-2.5" />
+                    Pattern
+                  </>
+                ) : (
+                  <>
+                    <Brain className="w-2.5 h-2.5" />
+                    AI
+                  </>
+                )}
+              </span>
+            )}
             {sortedFinding.line && (
               <span className="text-xs text-slate-600 font-mono">
                 {sortedFinding.file}:{sortedFinding.line}

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Code, Bug, Shield, Zap, Sparkles, CheckCircle2 } from 'lucide-react';
 import AnalysisPanel from './AnalysisPanel';
 import ResultsDashboard from './ResultsDashboard';
+import ErrorBoundary from './ErrorBoundary';
 import { type AnalysisResult } from '../../api/forge';
 
 export default function ForgePage() {
@@ -129,7 +130,9 @@ export default function ForgePage() {
             </div>
 
             {/* Results Dashboard */}
-            <ResultsDashboard result={result} />
+            <ErrorBoundary>
+              <ResultsDashboard result={result} />
+            </ErrorBoundary>
 
             {/* Analyze Another */}
             <div className="flex justify-center">

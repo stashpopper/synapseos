@@ -12,6 +12,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 export type AnalysisDepth = "quick" | "standard" | "deep";
 export type Severity = "critical" | "high" | "medium" | "low";
 export type Category = "security" | "performance" | "quality" | "style" | "architecture";
+export type FindingSource = 'pattern' | 'ai';
 
 export interface Finding {
   severity: Severity;
@@ -23,6 +24,7 @@ export interface Finding {
   recommendation: string;
   code_snippet: string | null;
   cwe_id: string | null;
+  source?: 'pattern' | 'ai';
 }
 
 export interface ScoreBreakdown {
@@ -55,6 +57,12 @@ export interface AgentResult {
   message: string;
   findings: Finding[];
   summary: string | null;
+  // Docs agent specific fields
+  readme_suggestions?: string;
+  api_docs?: string;
+  configuration_docs?: string;
+  comment_suggestions?: string[];
+  test_suggestions?: string;
 }
 
 export interface AnalyzeRequest {

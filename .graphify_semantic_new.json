@@ -1,0 +1,921 @@
+{
+  "nodes": [
+    {
+      "id": "synapseos_SynapseOS",
+      "label": "SynapseOS",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_multi_agent_analysis",
+      "label": "Multi-Agent Analysis",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_owasp_security",
+      "label": "OWASP Security Scan",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_code_quality",
+      "label": "Code Quality Intelligence",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_performance_opt",
+      "label": "Performance Optimization",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_local_privacy",
+      "label": "Local Privacy",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_react_frontend",
+      "label": "React Frontend",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Tech Stack",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_fastapi_backend",
+      "label": "FastAPI Backend",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Tech Stack",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_llm_orchestration",
+      "label": "LLM Orchestration",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Tech Stack",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_7_agents",
+      "label": "7 Specialized Agents",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_planner_agent",
+      "label": "Planner Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_reviewer_agent",
+      "label": "Reviewer Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_security_agent",
+      "label": "Security Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_performance_agent",
+      "label": "Performance Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_quality_agent",
+      "label": "Quality Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_synthesizer_agent",
+      "label": "Synthesizer Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_docs_agent",
+      "label": "Docs Agent",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_cyclomatic_complexity",
+      "label": "Cyclomatic Complexity",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_antipattern_detection",
+      "label": "Anti-pattern Detection",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "Features",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_fastapi",
+      "label": "FastAPI",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_uvicorn",
+      "label": "Uvicorn",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_pydantic",
+      "label": "Pydantic",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_langgraph",
+      "label": "LangGraph",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_langchain",
+      "label": "LangChain",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_openai_provider",
+      "label": "OpenAI Provider",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_anthropic_provider",
+      "label": "Anthropic Provider",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_mistral_provider",
+      "label": "Mistral Provider",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_ollama_provider",
+      "label": "Ollama Provider",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_httpx",
+      "label": "HTTPX",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_python_dotenv",
+      "label": "Python-dotenv",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_aiofiles",
+      "label": "Aiofiles",
+      "file_type": "document",
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_docker_build",
+      "label": "Docker Build",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": "steps[0]",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_gcr_push",
+      "label": "GCR Push",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": "steps[1]",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_cloud_run_deploy",
+      "label": "Cloud Run Deploy",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": "steps[2]",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_google_cloud",
+      "label": "Google Cloud Platform",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_container_registry",
+      "label": "Google Container Registry",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_gcloud_sdk",
+      "label": "gcloud SDK",
+      "file_type": "document",
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_auto_scaling",
+      "label": "Auto-scaling (0-10 instances)",
+      "file_type": "rationale",
+      "source_file": "cloudbuild.yaml",
+      "source_location": "steps[2]",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_gpt4o_model",
+      "label": "GPT-4o Analysis Model",
+      "file_type": "rationale",
+      "source_file": "cloudbuild.yaml",
+      "source_location": "steps[2]",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_vite_entry",
+      "label": "Vite Entry Point",
+      "file_type": "document",
+      "source_file": "index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_inter_font",
+      "label": "Inter Font",
+      "file_type": "document",
+      "source_file": "index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_jetbrains_mono",
+      "label": "JetBrains Mono Font",
+      "file_type": "document",
+      "source_file": "index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_google_fonts",
+      "label": "Google Fonts CDN",
+      "file_type": "document",
+      "source_file": "index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "synapseos_main_tsx",
+      "label": "main.tsx Entry",
+      "file_type": "document",
+      "source_file": "index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_multi_agent_analysis",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_owasp_security",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_code_quality",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_performance_opt",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_local_privacy",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_react_frontend",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_fastapi_backend",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_SynapseOS",
+      "target": "synapseos_llm_orchestration",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_multi_agent_analysis",
+      "target": "synapseos_7_agents",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_planner_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_reviewer_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_security_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_performance_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_quality_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_synthesizer_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_7_agents",
+      "target": "synapseos_docs_agent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_code_quality",
+      "target": "synapseos_cyclomatic_complexity",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_code_quality",
+      "target": "synapseos_antipattern_detection",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_owasp_security",
+      "target": "synapseos_security_agent",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_performance_opt",
+      "target": "synapseos_performance_agent",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_react_frontend",
+      "target": "synapseos_llm_orchestration",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.6,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_fastapi",
+      "target": "synapseos_uvicorn",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_fastapi",
+      "target": "synapseos_pydantic",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_langgraph",
+      "target": "synapseos_langchain",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_langchain",
+      "target": "synapseos_openai_provider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_langchain",
+      "target": "synapseos_anthropic_provider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_langchain",
+      "target": "synapseos_mistral_provider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_langchain",
+      "target": "synapseos_ollama_provider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_fastapi",
+      "target": "synapseos_httpx",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.7,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_fastapi",
+      "target": "synapseos_python_dotenv",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.6,
+      "source_file": "requirements.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_docker_build",
+      "target": "synapseos_gcr_push",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_gcr_push",
+      "target": "synapseos_cloud_run_deploy",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_docker_build",
+      "target": "synapseos_google_cloud",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_gcr_push",
+      "target": "synapseos_container_registry",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_cloud_run_deploy",
+      "target": "synapseos_gcloud_sdk",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_cloud_run_deploy",
+      "target": "synapseos_auto_scaling",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_cloud_run_deploy",
+      "target": "synapseos_gpt4o_model",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_cloud_run_deploy",
+      "target": "synapseos_openai_provider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "cloudbuild.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_vite_entry",
+      "target": "synapseos_main_tsx",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_inter_font",
+      "target": "synapseos_google_fonts",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "synapseos_jetbrains_mono",
+      "target": "synapseos_google_fonts",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "index.html",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "synapseos_agent_system",
+      "label": "Agent System Architecture",
+      "nodes": [
+        "synapseos_planner_agent",
+        "synapseos_reviewer_agent",
+        "synapseos_security_agent",
+        "synapseos_performance_agent",
+        "synapseos_quality_agent",
+        "synapseos_synthesizer_agent",
+        "synapseos_docs_agent"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
