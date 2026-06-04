@@ -415,13 +415,11 @@ Analysis depth: {depth}
 Please analyze this code structure and create a plan.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
+    # Use fast model for planner - just needs structure detection
     fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if depth == "quick" else analysis_model
 
     try:
-        result = _call_llm(PLANNER_PROMPT, user_content, model=selected_model)
+        result = _call_llm(PLANNER_PROMPT, user_content, model=fast_model)
 
         return {
             "planner_result": {
@@ -471,25 +469,15 @@ File: {filename}
 
 FRAMEWORK CONTEXT: {framework_context}
 
-NEGATIVE CONSTRAINTS (MUST FOLLOW):
-- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
-- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
-- If context says "No specific framework detected", you MUST ONLY report issues visible in the code. Do NOT assume it's frontend or backend.
-- NEVER report issues about things you cannot see in the code.
-- NEVER say "potential" or "might" or "could" — only report what is actually present.
+FRAMEWORK CONTEXT: {framework_context}
 
-RULES:
-1. ONLY report issues that are ACTUALLY present in the code.
-2. Verify line numbers match the actual code.
-3. Do NOT invent issues about test coverage, missing features, or things not in the code.
+RULES: Only report issues ACTUALLY in the code. Verify line numbers. No hallucinations.
 
 Please review this code for quality issues, anti-patterns, and style problems.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+    # Use fast model for non-synthesis agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
 
     try:
         result = _call_llm(REVIEWER_PROMPT, user_content, model=selected_model)
@@ -551,24 +539,15 @@ FRAMEWORK CONTEXT: {framework_context}
 
 Quick scan found {len(quick_findings)} potential issues.
 
-NEGATIVE CONSTRAINTS (MUST FOLLOW):
-- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
-- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
-- NEVER report issues about things you cannot see in the code.
-- NEVER say "potential" or "might" or "could" — only report what is actually present.
+FRAMEWORK CONTEXT: {framework_context}
 
-RULES:
-1. ONLY report issues that are ACTUALLY present in the code.
-2. Verify line numbers match the actual code.
-3. Do NOT invent issues about test coverage, missing features, or things not in the code.
+RULES: Only report issues ACTUALLY in the code. Verify line numbers. No hallucinations.
 
 Please perform a thorough code quality analysis.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+    # Use fast model for non-synthesis agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
 
     try:
         result = _call_llm(REVIEWER_PROMPT, user_content, model=selected_model)
@@ -678,10 +657,8 @@ RULES:
 Please perform a thorough security analysis.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+    # Use fast model for non-synthesis agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
 
     try:
         result = _call_llm(SECURITY_PROMPT, user_content, model=selected_model)
@@ -793,10 +770,8 @@ RULES:
 Please perform a thorough performance analysis.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+    # Use fast model for non-synthesis agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
 
     try:
         result = _call_llm(PERFORMANCE_PROMPT, user_content, model=selected_model)
@@ -927,16 +902,14 @@ NEGATIVE CONSTRAINTS:
 """
 
     # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
-
+    # Use fast model for synthesizer - findings already collected by other agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
     try:
         result = _call_llm(SYNTHESIZER_PROMPT, user_content, model=selected_model)
 
         # Validate LLM response has required fields
         if "score" not in result or "score_breakdown" not in result:
-            raise ValueError("LLM response missing required fields")
+            raise ValueError(f"LLM response missing required fields. Got keys: {list(result.keys())}")
 
         score = result["score"]
         score_breakdown = result["score_breakdown"]
@@ -1012,10 +985,8 @@ File: {filename}
 Please generate documentation suggestions for this code.
 """
 
-    # Select model based on depth
-    analysis_model = os.getenv("ANALYSIS_MODEL", "devstral-2512")
-    fast_model = os.getenv("FAST_MODEL", "mistral-small")
-    selected_model = fast_model if state.get("depth", "standard") == "quick" else analysis_model
+    # Use fast model for non-synthesis agents
+    selected_model = os.getenv("FAST_MODEL", "mistral-small")
 
     try:
         result = _call_llm(DOCS_PROMPT, user_content, model=selected_model)
