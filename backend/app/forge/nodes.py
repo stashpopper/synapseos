@@ -13,8 +13,113 @@ import os
 from typing import Any, Dict, List
 
 from langchain_core.messages import HumanMessage, SystemMessage
+import re
 
 SEVERITY_ORDER = {"critical": 4, "high": 3, "medium": 2, "low": 1}
+
+
+def detect_framework(code: str, language: str) -> str:
+    """Detect the framework/context of the code to prevent AI hallucinations.
+    Returns a context string that tells the AI what NOT to look for."""
+    context_parts = []
+    
+    # Frontend framework detection
+    frontend_patterns = {
+        'react': r'from\s+["\']react["\']|React\.\w+|jsx|JSX|useEffect|useState|useContext',
+        'vue': r'from\s+["\']vue["\']|<template>|<script\s+setup|vue-router|pinia|v-model',
+        'angular': r'from\s+["\']@angular|@Component|@NgModule|ngModule|HttpClientModule',
+        'svelte': r'from\s+["\']svelte["\']|<script\s+context|onMount|bind:value',
+        'nextjs': r'from\s+["\']next["\']|getServerSideProps|getStaticProps|next/router|next/image',
+    }
+    
+    # Backend framework detection
+    backend_patterns = {
+        'express': r'from\s+["\']express["\']|app\.\w+|req\.\w+|res\.\w+|express\(\)',
+        'fastapi': r'from\s+["\']fastapi["\']|@app\.\w+|FastAPI\(\)|async def\s+\w+\(',
+        'django': r'from\s+django|from\s+django\.\w+|models\.\w+|views\.\w+|urls\.\w+',
+        'flask': r'from\s+flask|@app\.\w+|Flask\(__name__\)|render_template',
+        'node': r'from\s+["\']http["\']|require\(["\']http["\']|http\.createServer|node:http',
+        'python': r'import\s+os|import\s+sys|import\s+json|import\s+re|import\s+math',
+    }
+    
+    detected = []
+    
+    # Check frontend patterns
+    for name, pattern in frontend_patterns.items():
+        if re.search(pattern, code, re.IGNORECASE):
+            detected.append(f'frontend:{name}')
+    
+    # Check backend patterns
+    for name, pattern in backend_patterns.items():
+        if re.search(pattern, code, re.IGNORECASE):
+            detected.append(f'backend:{name}')
+    
+    # Build context string
+    if not detected:
+        context_parts.append(f'No specific framework detected. This is {language} code.')
+        context_parts.append('Do NOT assume this is frontend or backend code. Only report issues visible in the code.')
+    else:
+        context_parts.append(f'Detected frameworks: {", ".join(detected)}')
+        
+        # Add negative constraints based on detected frameworks
+        has_frontend = any(d.startswith('frontend:') for d in detected)
+        has_backend = any(d.startswith('backend:') for d in detected)
+        
+        if has_frontend and not has_backend:
+            context_parts.append('This is FRONTEND code. Do NOT report backend issues like: N+1 queries, missing rate limiting, CORS, database connections, server-side authentication, API endpoints.')
+        elif has_backend and not has_frontend:
+            context_parts.append('This is BACKEND code. Do NOT report frontend issues like: DOM manipulation, React hooks, CSS issues, client-side state management, browser compatibility.')
+        elif has_frontend and has_backend:
+            context_parts.append('This code contains both frontend and backend patterns. Analyze each section independently.')
+        else:
+            context_parts.append('Analyze based on actual code patterns only. Do not assume framework-specific issues.')
+    
+    return '\n'.join(context_parts)
+
+
+def filter_hallucinated_findings(findings: List[Dict], code: str, language: str) -> List[Dict]:
+    """Remove findings that are hallucinated based on framework context.
+    If code is detected as backend, remove frontend-specific findings and vice versa."""
+    framework_context = detect_framework(code, language)
+    has_backend = 'backend:' in framework_context and 'frontend:' not in framework_context
+    has_frontend = 'frontend:' in framework_context and 'backend:' not in framework_context
+    
+    if not has_backend and not has_frontend:
+        return findings  # No framework detected, keep all findings
+    
+    # Keywords that indicate frontend-specific issues
+    frontend_keywords = [
+        'dom manipulation', 'dom ', 'jsx', 'react hook', 'useeffect', 'usestate',
+        'css ', 'css-', 'css.', 'stylesheet', 'browser compatibility',
+        'vue component', 'angular template', 'svelte', 'client-side',
+        'frontend', 'ui ', 'user interface', 'responsive',
+        'window.', 'document.', 'element.', 'node.', 'render',
+    ]
+    
+    # Keywords that indicate backend-specific issues
+    backend_keywords = [
+        'n+1 query', 'database connection', 'server-side', 'api endpoint',
+        'middleware', 'routing', 'backend', 'rate limiting', 'cors',
+        'authentication server', 'token validation', 'session',
+        'http server', 'web server', 'express app', 'fastapi app',
+    ]
+    
+    filtered = []
+    for f in findings:
+        title = (f.get('title', '') + ' ' + f.get('description', '')).lower()
+        
+        if has_backend and not has_frontend:
+            # Backend code — remove frontend hallucinations
+            if any(kw in title for kw in frontend_keywords):
+                continue
+        elif has_frontend and not has_backend:
+            # Frontend code — remove backend hallucinations
+            if any(kw in title for kw in backend_keywords):
+                continue
+        
+        filtered.append(f)
+    
+    return filtered
 
 # Canonical categories that the frontend expects
 VALID_CATEGORIES = {"security", "performance", "quality", "style", "architecture"}
@@ -348,14 +453,30 @@ def reviewer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     code = state.get("code", "")
     filename = state.get("filename", "unknown")
+    language = state.get("language", "code")
 
-    user_content = f"""
-Code to review:
-```{state.get('language', 'code')}
+    framework_context = detect_framework(code, language)
+
+    user_content = f"""CODE TO REVIEW:
+```{language}
 {code}
 ```
 
 File: {filename}
+
+FRAMEWORK CONTEXT: {framework_context}
+
+NEGATIVE CONSTRAINTS (MUST FOLLOW):
+- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
+- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
+- If context says "No specific framework detected", you MUST ONLY report issues visible in the code. Do NOT assume it's frontend or backend.
+- NEVER report issues about things you cannot see in the code.
+- NEVER say "potential" or "might" or "could" — only report what is actually present.
+
+RULES:
+1. ONLY report issues that are ACTUALLY present in the code.
+2. Verify line numbers match the actual code.
+3. Do NOT invent issues about test coverage, missing features, or things not in the code.
 
 Please review this code for quality issues, anti-patterns, and style problems.
 """
@@ -407,15 +528,30 @@ def quality_node(state: Dict[str, Any]) -> Dict[str, Any]:
     # Pattern-based quality scan
     quick_findings = basic_quality_scan(code, language)
 
-    user_content = f"""
-Code to review for quality issues:
+    framework_context = detect_framework(code, language)
+
+    user_content = f"""CODE TO REVIEW:
 ```{language}
 {code}
 ```
 
 File: {filename}
 
+FRAMEWORK CONTEXT: {framework_context}
+
 Quick scan found {len(quick_findings)} potential issues.
+
+NEGATIVE CONSTRAINTS (MUST FOLLOW):
+- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
+- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
+- NEVER report issues about things you cannot see in the code.
+- NEVER say "potential" or "might" or "could" — only report what is actually present.
+
+RULES:
+1. ONLY report issues that are ACTUALLY present in the code.
+2. Verify line numbers match the actual code.
+3. Do NOT invent issues about test coverage, missing features, or things not in the code.
+
 Please perform a thorough code quality analysis.
 """
 
@@ -500,15 +636,30 @@ def security_node(state: Dict[str, Any]) -> Dict[str, Any]:
     # Quick pattern-based scan (always runs)
     quick_findings = basic_security_scan(code, language)
 
-    user_content = f"""
-Code to scan for security vulnerabilities:
+    framework_context = detect_framework(code, language)
+
+    user_content = f"""CODE TO SCAN:
 ```{language}
 {code}
 ```
 
 File: {filename}
 
+FRAMEWORK CONTEXT: {framework_context}
+
 Quick pattern scan found {len(quick_findings)} potential issues.
+
+NEGATIVE CONSTRAINTS (MUST FOLLOW):
+- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
+- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
+- NEVER report issues about things you cannot see in the code.
+- NEVER say "potential" or "might" or "could" — only report what is actually present.
+
+RULES:
+1. ONLY report vulnerabilities that are ACTUALLY present in the code.
+2. Verify line numbers match the actual code.
+3. Do NOT invent findings about test coverage, missing features, or things not in the code.
+
 Please perform a thorough security analysis.
 """
 
@@ -595,15 +746,30 @@ def performance_node(state: Dict[str, Any]) -> Dict[str, Any]:
     # Quick pattern-based scan
     quick_findings = basic_performance_scan(code, language)
 
-    user_content = f"""
-Code to analyze for performance issues:
+    framework_context = detect_framework(code, language)
+
+    user_content = f"""CODE TO ANALYZE:
 ```{language}
 {code}
 ```
 
 File: {filename}
 
+FRAMEWORK CONTEXT: {framework_context}
+
 Quick scan found {len(quick_findings)} potential issues.
+
+NEGATIVE CONSTRAINTS (MUST FOLLOW):
+- If context says "This is BACKEND code", you MUST NOT report: DOM manipulation, React hooks, CSS issues, browser compatibility, client-side state, JSX, Vue components, Angular templates.
+- If context says "This is FRONTEND code", you MUST NOT report: N+1 queries, database connections, server-side auth, API endpoints, middleware, routing, backend routing.
+- NEVER report issues about things you cannot see in the code.
+- NEVER say "potential" or "might" or "could" — only report what is actually present.
+
+RULES:
+1. ONLY report performance issues that are ACTUALLY present in the code.
+2. Verify line numbers match the actual code.
+3. Do NOT invent issues about test coverage, missing features, or things not in the code.
+
 Please perform a thorough performance analysis.
 """
 
@@ -682,6 +848,8 @@ def synthesizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     Synthesizer agent: Combines all findings into unified report.
     """
     code = state.get("code", "")
+    language = state.get("language", "code")
+    filename = state.get("filename", "unknown")
     
     # Collect all findings from agents
     raw_findings: List[Dict] = []
@@ -695,6 +863,9 @@ def synthesizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     
     # Deduplicate
     all_findings = deduplicate_findings(raw_findings)
+    
+    # Filter out hallucinated findings based on framework context
+    all_findings = filter_hallucinated_findings(all_findings, code, language)
 
     # Build summary of all agent results
     agent_summaries = []
@@ -707,7 +878,12 @@ def synthesizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     pattern_findings = [f for f in all_findings if f.get("source") == "pattern"]
     ai_findings = [f for f in all_findings if f.get("source") == "ai"]
 
-    user_content = f"""
+    user_content = f"""CODE CONTEXT:
+Language: {language}
+Filename: {filename}
+
+FRAMEWORK DETECTION: {detect_framework(code, language)}
+
 Deduplicated agent findings ({len(all_findings)} total):
 
 --- PATTERN-BASED FINDINGS ({len(pattern_findings)}) ---
@@ -719,6 +895,10 @@ Deduplicated agent findings ({len(all_findings)} total):
 Please synthesize these into a unified report with health score.
 Return the EXACT same findings you received — do NOT add new findings that were not in the input.
 Do NOT invent findings about random modules, deserialization, or anything not present in the code.
+NEGATIVE CONSTRAINTS:
+- If context says "This is BACKEND code", do NOT add any frontend-related findings.
+- If context says "This is FRONTEND code", do NOT add any backend-related findings.
+- NEVER invent findings about things not visible in the input.
 """
 
     try:
