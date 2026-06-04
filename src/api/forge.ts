@@ -35,10 +35,10 @@ export interface ScoreBreakdown {
 
 export interface AnalysisResult {
   analysis_id: string;
-  health_score: number;
-  summary: string;
+  health_score: number | null;
+  summary: string | null;
   recommendations: string[];
-  score_breakdown: ScoreBreakdown;
+  score_breakdown: ScoreBreakdown | null;
   findings: Finding[];
   agents: {
     planner: AgentResult | null;

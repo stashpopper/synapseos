@@ -724,11 +724,20 @@ Do NOT invent findings about random modules, deserialization, or anything not pr
     try:
         result = _call_llm(SYNTHESIZER_PROMPT, user_content)
 
-        score = result.get("score", 50)
-        score_breakdown = result.get("score_breakdown", {"security": 50, "quality": 50, "performance": 50})
-        summary = result.get("summary", "Analysis complete")
+        # Validate LLM response has required fields
+        if "score" not in result or "score_breakdown" not in result:
+            raise ValueError("LLM response missing required fields")
+
+        score = result["score"]
+        score_breakdown = result["score_breakdown"]
+        summary = result.get("summary", "")
         recommendations = result.get("recommendations", [])
         merged_findings = result.get("merged_findings", all_findings)
+
+        # Validate score is a number between 0-100
+        if not isinstance(score, (int, float)) or score < 0 or score > 100:
+            raise ValueError(f"Invalid score: {score}")
+
         # Preserve source field on merged findings
         if merged_findings:
             merged_findings = [{**f, "source": f.get("source", "ai")} for f in merged_findings]
@@ -752,46 +761,22 @@ Do NOT invent findings about random modules, deserialization, or anything not pr
             ],
         }
     except Exception as e:
-        # Fallback scoring (already deduplicated)
-        critical = sum(1 for f in all_findings if f.get("severity") == "critical")
-        high = sum(1 for f in all_findings if f.get("severity") == "high")
-        medium = sum(1 for f in all_findings if f.get("severity") == "medium")
-        low = sum(1 for f in all_findings if f.get("severity") == "low")
-        score = max(0, 100 - critical * 15 - high * 8 - medium * 4 - low * 2)
-
-        # Ensure score reflects all categories
-        security_findings = sum(1 for f in all_findings if f.get("category") == "security")
-        quality_findings = sum(1 for f in all_findings if f.get("category") == "quality")
-        performance_findings = sum(1 for f in all_findings if f.get("category") == "performance")
-        if security_findings == 0 and quality_findings == 0 and performance_findings == 0:
-            score = max(0, score)
-        else:
-            score = max(0, 100 - security_findings * 10 - quality_findings * 8 - performance_findings * 8)
-
+        # If LLM fails, show analysis failed — no hardcoded scores
         return {
             "synthesizer_result": {
                 "agent": "synthesizer",
-                "status": "completed",
-                "message": f"Health score: {score}/100 (fallback)",
-                "findings": all_findings,
-                "summary": f"Analysis complete — {len(all_findings)} findings, score: {score}/100",
+                "status": "error",
+                "message": "Failed to analyze — LLM analysis unavailable",
+                "findings": [],
+                "summary": None,
             },
-            "all_findings": all_findings,
-            "health_score": score,
-            "summary": f"Analysis complete — {len(all_findings)} findings, score: {score}/100",
-            "recommendations": ["Review all findings and apply recommendations"],
-            "score_breakdown": {
-                "security": max(0, 100 - sum(1 for f in all_findings if f.get("category") == "security") * 10),
-                "quality": max(0, 100 - sum(1 for f in all_findings if f.get("category") == "quality") * 8),
-                "performance": max(0, 100 - sum(1 for f in all_findings if f.get("category") == "performance") * 8),
-            } if any(f.get("category") in ("security", "quality", "performance") for f in all_findings) else {
-                "security": max(0, 100 - critical * 15 - high * 8),
-                "quality": max(0, 100 - medium * 4 - low * 2),
-                "performance": max(0, 100 - medium * 4 - low * 2),
-            },
+            "all_findings": [],
+            "health_score": None,
+            "summary": "Failed to analyze — LLM analysis unavailable",
+            "recommendations": [],
+            "score_breakdown": None,
             "stream_messages": [
-                f"[Synthesizer] Fallback scoring — {len(all_findings)} findings",
-                f"[Synthesizer] Health score: {score}/100",
+                f"[Synthesizer] Analysis failed: {str(e)}",
             ],
         }
 

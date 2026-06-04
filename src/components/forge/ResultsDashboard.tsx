@@ -65,14 +65,16 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   };
 
   // Determine score color
-  const getScoreColor = (score: number) => {
+  const getScoreColor = (score: number | null) => {
+    if (score === null) return 'text-red-400';
     if (score >= 80) return 'text-emerald-400';
     if (score >= 60) return 'text-amber-400';
     if (score >= 40) return 'text-orange-400';
     return 'text-red-400';
   };
 
-  const getScoreLabel = (score: number) => {
+  const getScoreLabel = (score: number | null) => {
+    if (score === null) return 'Failed to Analyze';
     if (score >= 90) return 'Excellent';
     if (score >= 80) return 'Good';
     if (score >= 60) return 'Fair';
@@ -85,13 +87,19 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
       {/* Score Header */}
       <div className="glass-card p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <ScoreGauge score={result.health_score} size="lg" />
+          {result.health_score !== null ? (
+            <ScoreGauge score={result.health_score} size="lg" />
+          ) : (
+            <div className="w-24 h-24 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center">
+              <span className="text-2xl">⚠️</span>
+            </div>
+          )}
 
           <div className="flex-1 text-center sm:text-left">
             <h2 className="text-2xl font-bold text-white mb-1">
               Code Health: <span className={getScoreColor(result.health_score)}>{getScoreLabel(result.health_score)}</span>
             </h2>
-            <p className="text-sm text-slate-500 leading-relaxed">{result.summary}</p>
+            <p className="text-sm text-slate-500 leading-relaxed">{result.summary || 'Analysis failed — please try again.'}</p>
 
             {/* Analysis ID */}
             <div className="flex items-center gap-2 mt-3">
