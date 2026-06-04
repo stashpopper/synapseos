@@ -1,0 +1,34 @@
+# This file specifies files that are NOT uploaded to Google Cloud Platform
+# Supports globbing patterns
+
+# Don't upload local dev dependencies
+backend/venv/
+backend/.venv/
+node_modules/
+
+# Don't upload secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Don't upload IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Don't upload OS files
+.DS_Store
+Thumbs.db
+
+# Don't upload git
+.git/
+
+# Don't upload graphify output
+graphify-out/
+
+# Don't upload docs
+PROJECT_PROPOSAL.md
+SETUP.md
+TODO.md

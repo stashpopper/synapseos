@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+package-lock.json
+.PnpmStore/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Cloud / CI
+.gcloudignore
+
+# Graphify
+graphify-out/
+
+# Secrets
+.env
+.env.local
+.env.production
+*.key
+*.pem
+
+# Docs
+PROJECT_PROPOSAL.md
+SETUP.md
+TODO.md

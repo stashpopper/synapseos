@@ -1,5 +1,5 @@
 steps:
-  # Build the backend Docker image
+  # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Build Docker image'
     args:
@@ -44,7 +44,7 @@ steps:
       - '--timeout'
       - '300s'
       - '--set-env-vars'
-      - 'LLM_PROVIDER=mistral,MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY,ANALYSIS_MODEL=devstral-2512,FAST_MODEL=mistral-small'
+      - 'LLM_PROVIDER=mistral,MISTRAL_API_KEY=XPcaNeegmgEaN93y8haynNoPLKS6bmqk,ANALYSIS_MODEL=labs-leanstral-2603,FAST_MODEL=labs-leanstral-2603'
 
 images:
   - 'gcr.io/chatappchatterbox/synapseos-backend:latest'
