@@ -166,8 +166,6 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
           dd: ({ children }) => (
             <dd className="text-slate-400 ml-4">{children}</dd>
           ),
-          // Paragraphs inside lists
-          'li p': ({ children }) => <span className="text-slate-300">{children}</span>,
           // Image
           img: ({ src, alt }) => (
             <img

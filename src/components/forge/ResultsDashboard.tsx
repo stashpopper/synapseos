@@ -36,7 +36,6 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
 
   const patternCount = result.findings.filter((f) => f.source === 'pattern').length;
   const aiCount = result.findings.filter((f) => f.source === 'ai').length;
-  const untaggedCount = result.findings.filter((f) => !f.source).length;
 
   const agentStatuses: Record<string, { status: 'pending' | 'running' | 'completed' | 'error'; message?: string }> = {
     planner: {
