@@ -158,7 +158,10 @@ The findings below have already been deduplicated by the system. Do NOT add, rem
    - Start at 100
    - Subtract: critical=-15, high=-8, medium=-4, low=-2
    - Minimum score: 0
-2. Calculate per-category scores (security, quality, performance)
+2. Calculate per-category scores (security, quality, performance):
+   - Start each at 100
+   - Subtract: critical=-15, high=-8, medium=-4, low=-2 (only for findings in that category)
+   - Minimum score: 0
 3. Generate actionable recommendations based on the findings
 4. Create a concise executive summary
 
@@ -167,27 +170,27 @@ Do NOT invent findings about random modules, deserialization, CORS, rate limitin
 
 Respond in JSON format:
 {{
-    "score": 72,
+    "score": <CALCULATED_SCORE>,
     "score_breakdown": {{
-        "security": 85,
-        "quality": 65,
-        "performance": 70
+        "security": <CALCULATED_SECURITY_SCORE>,
+        "quality": <CALCULATED_QUALITY_SCORE>,
+        "performance": <CALCULATED_PERFORMANCE_SCORE>
     }},
-    "summary": "Executive summary of findings...",
+    "summary": "<EXECUTIVE_SUMMARY>",
     "recommendations": [
-        "1. Fix SQL injection vulnerability in query_builder.py:42",
-        "2. Add input validation layer...",
-        "3. Use context managers for database connections..."
+        "<ACTIONABLE_RECOMMENDATION_1>",
+        "<ACTIONABLE_RECOMMENDATION_2>",
+        "<ACTIONABLE_RECOMMENDATION_3>"
     ],
     "merged_findings": [
         {{
-            "severity": "critical",
-            "category": "security",
-            "title": "SQL Injection",
-            "description": "...",
-            "recommendation": "...",
-            "file": "query_builder.py",
-            "line": 42
+            "severity": "<severity_from_input>",
+            "category": "<category_from_input>",
+            "title": "<title_from_input>",
+            "description": "<description_from_input>",
+            "recommendation": "<recommendation_from_input>",
+            "file": "<file_from_input>",
+            "line": <line_from_input>
         }}
     ]
 }}"""
