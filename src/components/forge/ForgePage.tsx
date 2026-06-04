@@ -121,7 +121,9 @@ export default function ForgePage() {
                 Review Results
               </h1>
               <p className="text-slate-500 text-base leading-relaxed">
-                {result.health_score >= 80
+                {result.health_score === null
+                  ? 'Analysis failed — please try again.'
+                  : result.health_score >= 80
                   ? 'Great job! Your code looks solid with minimal issues.'
                   : result.health_score >= 60
                   ? 'Good foundation, but there are some areas that need attention.'

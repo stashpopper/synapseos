@@ -44,7 +44,7 @@ steps:
       - '--timeout'
       - '300s'
       - '--set-env-vars'
-      - 'LLM_PROVIDER=openai,OPENAI_API_KEY=YOUR_OPENAI_API_KEY,ANALYSIS_MODEL=gpt-4o'
+      - 'LLM_PROVIDER=mistral,MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY,ANALYSIS_MODEL=devstral-2512,FAST_MODEL=mistral-small'
 
 images:
   - 'gcr.io/chatappchatterbox/synapseos-backend:latest'

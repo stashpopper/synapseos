@@ -234,7 +234,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
       {activeTab === 'recommendations' && (
         <Recommendations
           recommendations={result.recommendations}
-          scoreBreakdown={result.score_breakdown}
+          scoreBreakdown={result.score_breakdown ?? { security: 0, quality: 0, performance: 0 }}
         />
       )}
 
@@ -246,7 +246,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
         <AgentTimeline agents={agentStatuses} />
       )}
 
-      {activeTab === 'quality' && (
+      {activeTab === 'quality' && result.score_breakdown && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-white">Quality & Category Breakdown</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
