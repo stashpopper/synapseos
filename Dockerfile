@@ -9,7 +9,7 @@ COPY src/ ./src/
 COPY public/ ./public/
 COPY index.html ./
 COPY vite.config.ts ./
-COPY tsconfig.json tsconfig.node.json ./
+COPY tsconfig.json tsconfig.node.json tsconfig.app.json ./
 RUN npm run build
 
 # ---- Stage 2: Production backend ----
