@@ -5,7 +5,6 @@
  */
 
 import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
 import remarkGfm from 'remark-gfm';
 
 interface MarkdownRendererProps {
@@ -22,7 +21,6 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
     <div className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight]}
         components={{
           h1: ({ children }) => (
             <h1 className="text-2xl font-bold text-white mt-6 mb-4">{children}</h1>
@@ -56,15 +54,21 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
               {children}
             </a>
           ),
-          code: ({ className, children }) => {
-            const isBlock = className?.includes('language-') || className?.includes('hljs');
-            if (isBlock) return null;
+          code: ({ className: cls, children }) => {
+            // Inline code (not in pre)
+            if (!cls || !cls.includes('language-')) {
+              return <code className="text-amber-300 font-mono text-sm">{children}</code>;
+            }
+            // Block code — render it properly with visible content
             return (
-              <code className="text-amber-300 font-mono text-sm">{children}</code>
+              <pre className="my-4 p-4 rounded-lg bg-slate-900/60 border border-slate-700/50 overflow-x-auto text-sm text-slate-300 leading-relaxed whitespace-pre-wrap font-mono">
+                {children}
+              </pre>
             );
           },
+          // Handle code blocks that come from markdown as <code> inside <pre>
           pre: ({ children }) => (
-            <pre className="my-4 p-4 rounded-lg bg-slate-900/60 border border-slate-700/50 overflow-x-auto text-sm text-slate-300 leading-relaxed">
+            <pre className="my-4 p-4 rounded-lg bg-slate-900/60 border border-slate-700/50 overflow-x-auto text-sm text-slate-300 leading-relaxed whitespace-pre-wrap font-mono">
               {children}
             </pre>
           ),
