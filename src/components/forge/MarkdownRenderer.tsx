@@ -90,19 +90,9 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
           },
           // Code blocks
           pre: ({ children }) => (
-            <div className="relative my-4 rounded-xl overflow-hidden border border-slate-600/50 bg-slate-900/80">
-              <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/80 border-b border-slate-700/50">
-                <div className="flex gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-green-500/80" />
-                </div>
-                <span className="text-xs text-slate-500 ml-2 font-mono">code</span>
-              </div>
-              <div className="p-4 overflow-x-auto">
-                <pre className="text-sm text-slate-300 leading-relaxed">{children}</pre>
-              </div>
-            </div>
+            <pre className="my-4 p-4 rounded-xl bg-slate-900/60 border border-slate-700/50 overflow-x-auto text-sm text-slate-300 leading-relaxed">
+              {children}
+            </pre>
           ),
           // Lists
           ul: ({ children }) => (

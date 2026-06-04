@@ -224,11 +224,7 @@
   }
 
   .markdown-content pre {
-    @apply my-4 rounded-xl overflow-hidden border border-slate-600/50 bg-slate-900/80;
-  }
-
-  .markdown-content pre code {
-    @apply p-4 text-sm text-slate-300 leading-relaxed font-mono;
+    @apply my-4 p-4 rounded-xl bg-slate-900/60 border border-slate-700/50 overflow-x-auto text-sm text-slate-300 leading-relaxed;
   }
 
   .markdown-content img {
